@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 const initialState = {
   users:[]
@@ -14,9 +14,25 @@ const addUserSlice = createSlice({
       state?.users?.push(action.payload);
       console.log(state.users,"this is state")
     },
+    updateUser:(state,action)=>{
+      const { team, teamLead } = action.payload;
+      // console.log(current(state.users),"this is state in slice")
+      const datas=current(state.users)
+      const updata=datas.find((data)=>data.name==teamLead);
+      // console.log(updata?.index)
+      updata.isTeamLead=1;
+      updata.teamName=team;
+      console.log(updata,"this is finder");
+      console.log(current(state.users))
+
+
+      
+      const finder = state.users.find((user) => user.name==action.payload.teamLead);
+      console.log(finder,"this is find here you can update and add in store")
+    }
    
   },
 });
 
-export const { addUser } = addUserSlice.actions;
+export const { addUser,updateUser } = addUserSlice.actions;
 export default addUserSlice.reducer;

@@ -9,7 +9,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist
 const persistConfig = {
     key: 'root',
     storage,
-    // whiltelist:['']
+    whiltelist:['user']
   }
 
 const rootReducer=combineReducers({
