@@ -256,6 +256,8 @@ import TextField from "@mui/material/TextField";
 // import { MdVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 // import InputAdornment from "@mui/material/InputAdornment";
 import { Select, MenuItem, FormControl, InputLabel, Typography as MuiTypography } from '@mui/material';
+import { useSelector, UseSelector } from 'react-redux';
+import { addUser } from '../redux/slice';
 
 // Define a user type
 interface User {
@@ -266,14 +268,7 @@ interface User {
 const schema = yup.object().shape({
   team: yup.string().required("Team Name is required"),
   teamLead:yup.string().required("Team Lead is required"),
-  // password: yup
-  //   .string()
-  //   .min(8, "Password must be at least 8 characters")
-  //   .matches(/[A-Z]/, "Password must have at least one uppercase letter")
-  //   .matches(/[a-z]/, "Password must have at least one lowercase letter")
-  //   .matches(/[0-9]/, "Password must have at least one number")
-  //   .matches(/[@$!%*?&#]/, "Password must have at least one special character")
-  //   .required("Password is required"),
+
 });
 
 interface formData {
@@ -296,18 +291,21 @@ const style = {
 
 const Admin = () => {
   const [open, setOpen] = useState(false);
-  const [userOptions, setUserOptions] = useState<User[]>([]); // Store filtered users
+  const [userOptions, setUserOptions] = useState<User[]>([]); 
   const [selectedUser, setSelectedUser] = useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
 
+const users=useSelector((state)=>state.addUser)
+console.log(users,"this comes in dropdown")
   useEffect(() => {
     const stored = localStorage.getItem("signupUsers");
     if (stored) {
-      const parsed: User[] = JSON.parse(stored); // Parse data into User[]
-      const filtered = parsed.filter((u) => u.role === "user"); // Filter by role
-      setUserOptions(filtered); // Set the filtered users in state
+      const parsed: User[] = JSON.parse(stored); 
+      const filtered = parsed.filter((u) => u.role === "user"); 
+      setUserOptions(filtered); 
     }
   }, []);
 
@@ -319,8 +317,20 @@ const Admin = () => {
   // const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const onSubmit = (data: formData) => {
+
+
     
     console.log(data);
+    console.log(data.teamLead)
+    const signup=localStorage.getItem("signupUsers")||"[]"
+    const oldwala=JSON.parse(signup);
+    console.log("this is oldwala",oldwala)
+    const foundItem = oldwala.find(x => x.name == data.teamLead);
+    foundItem.isTeamLead=1;
+    foundItem.teamName=data.team;
+    localStorage.setItem("")
+
+    console.log("this is filterd",foundItem);
    
 
     const completeData = {
@@ -332,12 +342,12 @@ const Admin = () => {
     };
   
     // Save to localStorage
-    const teamStorage = localStorage.getItem("Team") || "[]";
-    const oldData = JSON.parse(teamStorage);
-    const newData = [...oldData, completeData];
+    // const teamStorage = localStorage.getItem("Team") || "[]";
+    // const oldData = JSON.parse(teamStorage);
+    // const newData = [...oldData, completeData];
   
-    localStorage.setItem("Team", JSON.stringify(newData));
-    console.log("Team data saved:", newData);
+    // localStorage.setItem("Team", JSON.stringify(newData));
+    // console.log("Team data saved:", newData);
     
     handleClose();
     
@@ -375,7 +385,7 @@ const Admin = () => {
     labelId="team-select-label"
     label="Select Team Lead"
     defaultValue=""
-    {...register("teamLead")} // ✅ bind to form
+    {...register("teamLead")} 
     error={!!errors.teamLead}
   >
     {userOptions.map((user, index) => (

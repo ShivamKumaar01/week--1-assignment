@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import IconButton from "@mui/material/IconButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdVisibilityOff } from "react-icons/md";
 import { MdOutlineVisibility } from "react-icons/md";
@@ -34,6 +34,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/slice";
 
 const schema = yup.object().shape({
 
@@ -83,6 +85,7 @@ const Signup: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate=useNavigate();
+    const dispatch=useDispatch()
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () =>
@@ -90,13 +93,20 @@ const Signup: React.FC = () => {
 
   const onSubmit = (data: formData) => {
     console.log(data);
+    const finalData={
+      ...data,
+      isTeamLead:0,
+      teamName:"",
+    }
 
 
    
-        const user=localStorage.getItem("signupUsers") || "[]"
-        const oldData=JSON.parse(user)
-        localStorage.setItem("signupUsers",JSON.stringify([...oldData, data]))
+        // const user=localStorage.getItem("signupUsers") || "[]"
+        // const oldData=JSON.parse(user)
+        // localStorage.setItem("signupUsers",JSON.stringify([...oldData, finalData]))
         console.log("hi this is user")
+        dispatch(addUser(finalData))
+
         navigate('/login')
         
     

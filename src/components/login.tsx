@@ -66,15 +66,7 @@ const Login: React.FC = () => {
     sessionStorage.setItem("Login",data.email);
     navigate('/admin')
     
-    // console.log(typeof(data));
-    
-
-    // console.log(typeof user, "this is in login");
-
-    // setTimeout(() => {
-    //   // toast.success("Login successfully")
-    //   navigate("/login");
-    // }, 3000);
+ 
   };
   
   return (
