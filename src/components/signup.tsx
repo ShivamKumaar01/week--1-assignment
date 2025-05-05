@@ -33,6 +33,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useNavigate } from "react-router";
 
 const schema = yup.object().shape({
 
@@ -81,7 +82,7 @@ const Signup: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  //   const navigate=useNavigate();
+    const navigate=useNavigate();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () =>
@@ -96,6 +97,8 @@ const Signup: React.FC = () => {
         const oldData=JSON.parse(user)
         localStorage.setItem("signupUsers",JSON.stringify([...oldData, data]))
         console.log("hi this is user")
+        navigate('/login')
+        
     
  
     // setTimeout(() => {

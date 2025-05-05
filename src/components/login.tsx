@@ -20,6 +20,7 @@ import { MdVisibilityOff } from "react-icons/md";
 import { MdOutlineVisibility } from "react-icons/md";
 // import { useNavigate } from "react-router-dom";
 import cover from "../assets/cover.jpg";
+import { useNavigate } from "react-router";
 
 const schema = yup.object().shape({
   //   role: yup.string().required("Role is required"),
@@ -53,6 +54,7 @@ const Login: React.FC = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const navigate=useNavigate();
   //   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
  
 
@@ -61,6 +63,9 @@ const Login: React.FC = () => {
 
   const onSubmit = (data: formData) => {
     console.log(data);
+    sessionStorage.setItem("Login",data.email);
+    navigate('/admin')
+    
     // console.log(typeof(data));
     
 
